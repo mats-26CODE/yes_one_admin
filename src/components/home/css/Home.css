@@ -1,0 +1,27 @@
+.home__container {
+    padding: 1.5rem;
+    background-color: #424242;
+    min-height: 100vh;
+}
+
+.home__into_box {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    margin: 0 5px 5px 0;
+}
+
+.home__into_box > div h4 {
+    padding: 0.5rem;
+}
+
+.home__into_box > form {
+    width: 80%;
+}
+
+.card__features_box > form {
+    display: flex;
+    justify-content: space-between;
+}

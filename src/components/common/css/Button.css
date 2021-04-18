@@ -1,0 +1,24 @@
+.button__container {
+    margin: 5px;
+}
+
+.button__container button {
+    width: 100%;
+    border-radius: 20px;
+    border: none;
+    background-color: darkgray;
+    display: inline-block;
+    font-size: medium;
+    font-weight: bold;
+    padding: 10px;
+    color: #ffffff;
+    transition: all .3s;
+    outline: none;
+}
+
+.button__container button:hover {
+    transition: all .5s;
+    transform: scale(1.02);
+    cursor: pointer;
+    background-color: #171719;
+}
