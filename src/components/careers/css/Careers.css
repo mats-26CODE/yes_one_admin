@@ -1,0 +1,13 @@
+.career__container {
+    padding: 1.5rem;
+    background-color: #424242;
+    min-height: 100vh;
+}
+
+.career__container > div {
+    margin: 2rem auto;
+}
+
+.career__box_fill {
+    /* display: flex; */
+}

@@ -1,36 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 import db from '../firebase';
-import firebase from 'firebase';
-import toast, { Toaster } from 'react-hot-toast';
 import './css/Home.css';
 
 //-> component imports
 import Input from '../common/Input';
 import Button from '../common/Button';
-
-//-> toast notification
-const notifySuccess = () => toast('Yay, Updated Successfully!',
-    {
-        icon: '👏',
-        style: {
-            borderRadius: '10px',
-            background: '#333',
-            color: '#fff',
-        },
-    }
-);
-const notifyError = () => toast('Oh no!, Update Failed!',
-    {
-        icon: '😔',
-        style: {
-            borderRadius: '10px',
-            background: '#333',
-            color: '#fff',
-        },
-    }
-);
-
+import { notifySuccess, notifyError } from '../notifications/NotificationAlerts';
 
 const Home = () => {
     // -> intro states
@@ -98,7 +74,7 @@ const Home = () => {
     const saveCardHeadings = (e) => {
         e.preventDefault();
         //-> do some database stuff
-        db.collection('homeCardsHeadings').add({
+        db.collection('homeCardsHeadings').set({
             cardOneHeading: cardOneHeading,
             cardTwoHeading: cardTwoHeading,
             cardThreeHeading: cardThreeHeading,
@@ -265,11 +241,11 @@ const Home = () => {
                     <div className={'home__into_box'}>
                         <div><h4>HOME CARDS HEADINGS</h4></div>
                         {
-                            cardHeadings.map( heading => {
+                            cardHeadings.map( (heading) => {
                                 <div key = {heading.id} style={{backgroundColor: 'red'}}>
-                                    <div><p>{heading.cardOneHeading}</p></div>
-                                    <div><p>{heading.cardTwoHeading}</p></div>
-                                    <div><p>{heading.cardThreeHeading}</p></div>
+                                    <div><p>{heading.data.cardOneHeading}</p></div>
+                                    <div><p>{heading.data.cardTwoHeading}</p></div>
+                                    <div><p>{heading.data.cardThreeHeading}</p></div>
                                 </div>
                             })
                         }
