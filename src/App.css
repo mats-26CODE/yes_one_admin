@@ -74,8 +74,9 @@
 }
 
 .body_top_bar {
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: sticky;
   top: 0;
   width: 100%;
@@ -83,6 +84,14 @@
   padding: 0.2rem;
   background-color: rgba(36, 36, 36, 0.95);
   z-index: 1000;
+}
+
+.body_top_bar > div:first-child {
+  display: flex;
+}
+
+.body_top_bar > div {
+  padding: 0 5rem 0 5rem;
 }
 
 .body_top_bar h4 {

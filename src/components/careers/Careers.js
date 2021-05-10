@@ -24,11 +24,11 @@ const Careers = () => {
     //-> fetching state
     const [ careerSnap, setCareerSnap ] = useState([]);
 
-    useEffect(() => {
-        db.collection('careers').onSnapshot((snapshot) => 
-            setCareerSnap(snapshot.docs.map((doc) => ({id: doc.id, data: doc.data()})))
-        );
-    }, [])
+    // useEffect(() => {
+    //     db.collection('careers').onSnapshot((snapshot) => 
+    //         setCareerSnap(snapshot.docs.map((doc) => ({id: doc.id, data: doc.data()})))
+    //     );
+    // }, [])
 
     //->save data to firebase firestore db
     const saveCareerHeader = (e) => {
