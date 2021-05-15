@@ -6,12 +6,12 @@
     width: 100%;
     border-radius: 20px;
     border: none;
-    background-color: darkgray;
+    background-color: #F5A522;
     display: inline-block;
     font-size: medium;
-    font-weight: bold;
+    font-weight: normal;
     padding: 10px;
-    color: #ffffff;
+    color: #070707;
     transition: all .3s;
     outline: none;
 }
@@ -21,4 +21,5 @@
     transform: scale(1.02);
     cursor: pointer;
     background-color: #171719;
+    color: white;
 }
