@@ -3,3 +3,32 @@
     background-color: #424242;
     min-height: 100vh;
 }
+
+.team__box_fill {
+    margin-bottom: 1rem;
+}
+
+.upload__progress_bar progress{
+    width: 100%;
+    height: 1.5rem;
+    color: #F5A522;
+    outline: none;
+    transition: all .3s;
+    -webkit-transition: all .3sc;
+}
+
+.upload__progress_bar progress[value]::-webkit-progress-value {
+    /* background-color: #F5A522; */
+    border-radius: 7px;
+    transition: all .3s;
+    -webkit-transition: all .3sc;
+    background-image:
+	   -webkit-linear-gradient(-45deg, 
+	                           transparent 33%, rgba(0, 0, 0, .1) 33%, 
+	                           rgba(0,0, 0, .1) 66%, transparent 66%),
+	   -webkit-linear-gradient(top, 
+	                           rgba(255, 255, 255, .25), 
+	                           rgba(0, 0, 0, .25)),
+	   -webkit-linear-gradient(left, #F5A522, #61410d);
+    background-size: 35px 20px, 100% 100%, 100% 100%;
+}

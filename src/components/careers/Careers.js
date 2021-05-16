@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
 import db from "../firebase";
 import firebase from "firebase";
-import "./css/Careers.css";
+import { useDocument, useCollection } from "react-firebase-hooks/firestore";
 
 //->component imports
 import Input from "../common/Input";
@@ -13,6 +13,8 @@ import {
   notifyingLoading,
 } from "../notifications/NotificationAlerts";
 import FormInput from "../common/FormInput";
+import "./css/Careers.css";
+import JobPost from "./subComponents/JobPost";
 
 const Careers = () => {
   const [careerHeader, setCareerHeader] = useState("");
@@ -92,6 +94,9 @@ const Careers = () => {
     e.preventDefault();
 
     if (careerPostHeader && careerPostSkills && careerPostOutro) {
+      //-> post a timestamp in db ( job post date and time posted )
+      const datePosted = firebase.firestore.FieldValue.serverTimestamp();
+
       db.collection("careers")
         .doc("careerJobPosts")
         .collection("info")
@@ -100,6 +105,7 @@ const Careers = () => {
           careerPostSkills: careerPostSkills,
           careerPostOutro: careerPostOutro,
           careerPostLink: careerPostLink,
+          datePosted: datePosted,
         })
         .then(() => {
           notifyDynamicSuccess({
@@ -214,8 +220,8 @@ const Careers = () => {
 
   const saveCareerSpot = (e) => {
     e.preventDefault();
-    if(careerSpot){
-        db.collection("careers")
+    if (careerSpot) {
+      db.collection("careers")
         .doc("careerSpot")
         .update({
           careerSpot: careerSpot,
@@ -234,10 +240,48 @@ const Careers = () => {
     }
   };
 
+  //-> retrieve data from firestore database using firebase hooks
+  const [headerDetails] = useDocument(
+    db
+      .collection("careers")
+      .doc("careerHeaderIntro")
+      .collection("info")
+      .doc("careerHeader")
+  );
+  const [introDetails] = useDocument(
+    db
+      .collection("careers")
+      .doc("careerHeaderIntro")
+      .collection("info")
+      .doc("careerIntro")
+  );
+  const [jobPosts] = useCollection(
+    db
+      .collection("careers")
+      .doc("careerJobPosts")
+      .collection("info")
+      .orderBy("datePosted", "desc")
+  );
+  const [joinHeaderDetails] = useDocument(
+    db
+      .collection("careers")
+      .doc("careerJoin")
+      .collection("info")
+      .doc("careerJoinHeader")
+  );
+  const [careerLoveDetails] = useDocument(
+    db.collection("careers").doc("careerLove")
+  );
+  const [careerSpotDetails] = useDocument(
+    db.collection("careers").doc("careerSpot")
+  );
+  console.log("career spot: ", careerSpotDetails?.data());
+
   return (
     <div className={"career__container"}>
       <Grid container>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <h4 id={"sectionHeader"}>[ Page header and introduction ]</h4>
           <div className={"career__box_fill"}>
             <FormInput
               type={"text"}
@@ -262,12 +306,25 @@ const Careers = () => {
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-          <div>{/* display header and intro here */}</div>
+          <h4 id={"sectionHeaderDetails"}>
+            [ Page header and introduction current details ]
+          </h4>
+          <div className={"header__intro_box"}>
+            <h4>
+              <span id={"label"}>Current header set:</span>{" "}
+              {headerDetails?.data().careerHeader}
+            </h4>
+            <h4>
+              <span id={"label"}>Current intro set:</span>{" "}
+              {introDetails?.data().careerIntro}
+            </h4>
+          </div>
         </Grid>
       </Grid>
 
       <Grid container>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <h4 id={"sectionHeader"}>[ Page Job Posts ]</h4>
           <form type={"submit"}>
             <Input
               type={"text"}
@@ -296,13 +353,37 @@ const Careers = () => {
             <Button onClick={saveJobPost} text={"Post"} type={"submit"} />
           </form>
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-          <div>{/* Display job posts here */}</div>
+        <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+          <h4 id={"sectionHeaderDetails"}>[ Page Current Job Posts ]</h4>
+          <div className={"job__posts"}>
+            {jobPosts?.docs.map((doc) => {
+              const {
+                careerPostHeader,
+                careerPostLink,
+                careerPostOutro,
+                careerPostSkills,
+                datePosted,
+              } = doc.data();
+
+              return (
+                <JobPost
+                  key={doc.id}
+                  jobPostId={doc.id}
+                  careerPostHeader={careerPostHeader}
+                  careerPostLink={careerPostLink}
+                  careerPostOutro={careerPostOutro}
+                  careerPostSkills={careerPostSkills}
+                  datePosted={datePosted}
+                />
+              );
+            })}
+          </div>
         </Grid>
       </Grid>
 
       <Grid container>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <h4 id={"sectionHeader"}>[ Page Join Header ]</h4>
           <div>
             <FormInput
               type={"text"}
@@ -316,12 +397,20 @@ const Careers = () => {
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-          <div>{/* Display career join header here */}</div>
+          <h4 id={"sectionHeaderDetails"}>[ Page Current Join Header Details ]</h4>
+
+          <div className={"header__intro_box"}>
+            <h4>
+              <span id={"label"}>Current join team header:</span>{" "}
+              {joinHeaderDetails?.data().careerJoinHeader}
+            </h4>
+          </div>
         </Grid>
       </Grid>
 
       <Grid container>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <h4 id={"sectionHeader"}>[ Page Career Love ]</h4>
           <div>
             <FormInput
               type={"text"}
@@ -353,12 +442,27 @@ const Careers = () => {
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-          <div>{/* display career loves here */}</div>
+          <h4 id={"sectionHeaderDetails"}>[ Page Current Career Love Details ]</h4>
+          <div className={"header__intro_box"}>
+            <h4>
+              <span id={"label"}>Career love one:</span>{" "}
+              {careerLoveDetails?.data().careerLoveOne}
+            </h4>
+            <h4>
+              <span id={"label"}>Career love two:</span>{" "}
+              {careerLoveDetails?.data().careerLoveTwo}
+            </h4>
+            <h4>
+              <span id={"label"}>Career love three:</span>{" "}
+              {careerLoveDetails?.data().careerLoveThree}
+            </h4>
+          </div>
         </Grid>
       </Grid>
 
       <Grid container>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <h4 id={"sectionHeader"}>[ Page Career Spot Availability ]</h4>
           <div>
             <FormInput
               type={"text"}
@@ -372,7 +476,13 @@ const Careers = () => {
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-          <div>{/* display spot here */}</div>
+          <h4 id={"sectionHeaderDetails"}>[ Page Current Career Spot Availability Details ]</h4>
+          <div className={"header__intro_box"}>
+            <h4>
+              <span id={"label"}>Current career spot availability: </span>{" "}
+              {careerSpotDetails?.data().careerSpot}
+            </h4>
+          </div>
         </Grid>
       </Grid>
     </div>

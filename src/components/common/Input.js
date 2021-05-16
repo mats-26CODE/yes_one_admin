@@ -7,6 +7,7 @@ const Input = ({
     maxLength,
     value,
     onChange,
+    accept
 }) => {
     return (
         <div className={'input__container'}>
@@ -16,6 +17,7 @@ const Input = ({
                 maxLength={maxLength}
                 value={value}
                 onChange={onChange}
+                accept={accept}
             />
         </div>
     )
