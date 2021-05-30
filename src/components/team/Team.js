@@ -3,6 +3,7 @@ import { Grid } from "@material-ui/core";
 import "./css/Team.css";
 import db from "../firebase";
 import { storage } from "../firebase";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 
 //-> component import
 import Input from "../common/Input";
@@ -24,6 +25,10 @@ import {
   selectTeamTraits,
 } from "../../features/teamSlice";
 import FormInput from "../common/FormInput";
+import Brain from "./subComponents/Brain";
+import PulseSpinner from "../common/PulseSpinner";
+import Trait from "./subComponents/Trait";
+import Client from "./subComponents/Client";
 
 const Team = () => {
   const [teamHeader, setTeamHeader] = useState("");
@@ -31,7 +36,8 @@ const Team = () => {
   const [brainName, setBrainName] = useState("");
   const [brainTitle, setBrainTitle] = useState("");
   const [brainImage, setBrainImage] = useState(null);
-  const [progress, setProgress] = useState(0);
+  const [brainProgress, setBrainProgress] = useState(0);
+  const [clientProgress, setClientProgress] = useState(0);
   const [teamTrait, setTeamTrait] = useState("");
   const [clientName, setClientName] = useState("");
   const [clientLogo, setClientLogo] = useState("");
@@ -116,8 +122,13 @@ const Team = () => {
     e.preventDefault();
 
     if (brainImage && brainTitle && brainImage) {
+      const brainImageID = Math.random()
+        .toString(36)
+        .substring(6)
+        .toUpperCase();
+
       const uploadTask = storage
-        .ref(`teamBrainsImages/${brainImage.name}`)
+        .ref(`teamBrainsImages/${brainImageID}`)
         .put(brainImage);
 
       //-> This code gets you the progress of the image upload
@@ -125,10 +136,10 @@ const Team = () => {
         "state_changed",
         (snapshot) => {
           // progress function
-          const progress = Math.round(
+          const brainProgress = Math.round(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
-          setProgress(progress);
+          setBrainProgress(brainProgress);
         },
         (error) => {
           //error function
@@ -139,7 +150,7 @@ const Team = () => {
           // complete upload function
           storage
             .ref("teamBrainsImages")
-            .child(brainImage.name)
+            .child(brainImageID)
             .getDownloadURL()
             .then((url) => {
               //-> post the image in the database
@@ -147,8 +158,9 @@ const Team = () => {
                 brainName: brainName,
                 brainTitle: brainTitle,
                 brainImage: url,
+                brainImageID: brainImageID,
               });
-              setProgress(0);
+              setBrainProgress(0);
               setBrainImage(null);
               setBrainName("");
               setBrainTitle("");
@@ -193,8 +205,13 @@ const Team = () => {
     e.preventDefault();
 
     if (clientName && clientLogo) {
+      const clientLogoID = Math.random()
+        .toString(36)
+        .substring(6)
+        .toUpperCase();
+
       const uploadTask = storage
-        .ref(`clientsLogos/${clientLogo.name}`)
+        .ref(`clientsLogos/${clientLogoID}`)
         .put(clientLogo);
 
       //-> This code gets you the progress of the logo upload
@@ -202,10 +219,10 @@ const Team = () => {
         "state_changed",
         (snapshot) => {
           // progress function
-          const progress = Math.round(
+          const clientProgress = Math.round(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
-          setProgress(progress);
+          setClientProgress(clientProgress);
         },
         (error) => {
           //error function
@@ -216,15 +233,16 @@ const Team = () => {
           // complete upload function
           storage
             .ref("clientsLogos")
-            .child(clientLogo.name)
+            .child(clientLogoID)
             .getDownloadURL()
             .then((url) => {
               //-> post the image in the database
               db.collection("team").doc("clients").collection("all").add({
                 clientName: clientName,
                 clientLogo: url,
+                clientLogoID: clientLogoID,
               });
-              setProgress(0);
+              setClientProgress(0);
               setClientLogo(null);
               setClientName("");
               notifyDynamicSuccess({
@@ -264,6 +282,34 @@ const Team = () => {
     }
   };
 
+  //-> retrieve data from firestore database using firebase hooks
+  const [headerDetails] = useDocument(
+    db
+      .collection("team")
+      .doc("teamHeaderIntro")
+      .collection("info")
+      .doc("teamHeader")
+  );
+  const [introDetails] = useDocument(
+    db
+      .collection("team")
+      .doc("teamHeaderIntro")
+      .collection("info")
+      .doc("teamIntro")
+  );
+  const [teamBrains] = useCollection(
+    db.collection("team").doc("teamBrains").collection("all")
+  );
+  const [teamTraitsDetails] = useCollection(
+    db.collection("team").doc("teamTraits").collection("all")
+  );
+  const [clientsDetails] = useCollection(
+    db.collection("team").doc("clients").collection("all")
+  );
+  const [clientTreatDetails] = useDocument(
+    db.collection("team").doc("clients").collection("clientsTreat").doc("info")
+  );
+
   return (
     <div className={"team_container"}>
       <Grid container>
@@ -296,8 +342,26 @@ const Team = () => {
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <h4 id={"sectionHeader"}>[ Page header and intro details ]</h4>
-          <div>{/* display team and header details here */}</div>
+          <h4 id={"sectionHeaderDetails"}>[ Page header and intro details ]</h4>
+          <div className={"header__intro_box"}>
+            {/* display team and header details here */}
+            <h4>
+              <span id={"label"}>Current header set:</span>{" "}
+              {headerDetails?.data().teamHeader ? (
+                headerDetails?.data().teamHeader
+              ) : (
+                <PulseSpinner />
+              )}
+            </h4>
+            <h4>
+              <span id={"label"}>Current intro set:</span>{" "}
+              {introDetails?.data().teamIntro ? (
+                introDetails?.data().teamIntro
+              ) : (
+                <PulseSpinner />
+              )}
+            </h4>
+          </div>
         </Grid>
       </Grid>
 
@@ -324,9 +388,9 @@ const Team = () => {
                 onChange={handleBrainImage}
                 accept={"image/*"}
               />
-              {progress > 0 ? (
+              {brainProgress > 0 ? (
                 <div className={"upload__progress_bar"}>
-                  <progress value={progress} max="100" />
+                  <progress value={brainProgress} max="100" />
                 </div>
               ) : (
                 <Button type={"submit"} text={"Save"} onClick={saveTeamBrain} />
@@ -334,9 +398,30 @@ const Team = () => {
             </form>
           </div>
         </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <h4 id={"sectionHeader"}>[ The brains behind details ]</h4>
+        <Grid item xs={12} sm={12} md={6} lg={8} xl={8}>
+          <h4 id={"sectionHeaderDetails"}>[ The brains behind details ]</h4>
           {/* Display all team members here */}
+          <div className={"team__brains"}>
+            {teamBrains?.docs ? (
+              teamBrains?.docs.map((doc) => {
+                const { brainName, brainTitle, brainImage, brainImageID } =
+                  doc.data();
+
+                return (
+                  <Brain
+                    key={doc.id}
+                    brainId={doc.id}
+                    brainName={brainName}
+                    brainTitle={brainTitle}
+                    brainImage={brainImage}
+                    brainImageID={brainImageID}
+                  />
+                );
+              })
+            ) : (
+              <PulseSpinner />
+            )}
+          </div>
         </Grid>
       </Grid>
 
@@ -355,10 +440,22 @@ const Team = () => {
             />
           </div>
         </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <h4 id={"sectionHeader"}>
+        <Grid item xs={12} sm={12} md={6} lg={8} xl={8}>
+          <h4 id={"sectionHeaderDetails"}>
             [ Team traits / characteristics details ]
           </h4>
+          <div className={"team__brains"}>
+            {teamTraitsDetails?.docs ? (
+              teamTraitsDetails.docs.map((doc) => {
+                const { teamTrait } = doc.data();
+                return (
+                  <Trait key={doc.id} traitId={doc.id} teamTrait={teamTrait} />
+                );
+              })
+            ) : (
+              <PulseSpinner />
+            )}
+          </div>
         </Grid>
       </Grid>
 
@@ -379,9 +476,9 @@ const Team = () => {
                 onChange={handleClientLogo}
                 accept={"image/*"}
               />
-              {progress > 0 ? (
+              {clientProgress > 0 ? (
                 <div className={"upload__progress_bar"}>
-                  <progress value={progress} max="100" />
+                  <progress value={clientProgress} max="100" />
                 </div>
               ) : (
                 <Button type={"submit"} text={"Save"} onClick={saveClient} />
@@ -389,9 +486,28 @@ const Team = () => {
             </form>
           </div>
         </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <h4 id={"sectionHeader"}>[ Clients area details ]</h4>
-          <div>{/* display clients here */}</div>
+        <Grid item xs={12} sm={12} md={6} lg={8} xl={8}>
+          <h4 id={"sectionHeaderDetails"}>[ Clients area details ]</h4>
+          <div className={"team__brains"}>
+            {/* display clients here */}
+            {clientsDetails?.docs ? (
+              clientsDetails?.docs.map((doc) => {
+                const { clientLogo, clientName, clientLogoID } = doc.data();
+
+                return (
+                  <Client
+                    key={doc.id}
+                    clientID={doc.id}
+                    clientLogo={clientLogo}
+                    clientName={clientName}
+                    clientLogoID={clientLogoID}
+                  />
+                );
+              })
+            ) : (
+              <PulseSpinner />
+            )}
+          </div>
         </Grid>
       </Grid>
 
@@ -410,9 +526,19 @@ const Team = () => {
             />
           </div>
         </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <h4 id={"sectionHeader"}>[ Client's treat details ]</h4>
-          <div>{/* display client treat here */}</div>
+        <Grid item xs={12} sm={12} md={6} lg={8} xl={8}>
+          <h4 id={"sectionHeaderDetails"}>[ Client's treat details ]</h4>
+          <div className={"header__intro_box"}>
+            {/* display client treat here */}
+            <h4>
+              <span id={"label"}>Our treat:</span>{" "}
+              {clientTreatDetails?.data().clientTreat ? (
+                clientTreatDetails?.data().clientTreat
+              ) : (
+                <PulseSpinner />
+              )}
+            </h4>
+          </div>
         </Grid>
       </Grid>
     </div>

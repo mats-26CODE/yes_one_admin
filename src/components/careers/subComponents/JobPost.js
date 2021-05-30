@@ -30,8 +30,7 @@ const JobPost = ({
         <FcBriefcase size={"2rem"} />
         <GiTrashCan
           size={"1.5rem"}
-          color={"#F5A522"}
-          style={{ cursor: "pointer" }}
+          className={"trash__icon"}
           onClick={() => deleteJobPost(jobPostId)}
         />
       </div>
