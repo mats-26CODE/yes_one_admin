@@ -109,13 +109,13 @@
   transform: rotate(90deg);
 }
 
-#sectionHeader {
+#homeSectionHeader {
   font-size: 1rem;
   color: #f5a522;
   margin: 0.3rem 0 0.3rem 0;
 }
 
-#sectionHeaderDetails {
+#homeSectionHeaderDetails {
   font-size: 1rem;
   color: #f5a522;
   margin: 0.3rem 0 0.3rem 2rem;
