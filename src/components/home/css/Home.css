@@ -44,3 +44,42 @@
     padding: 10px;
     border-radius: 5px;
 }
+
+.products__box {
+  display: grid;
+  grid-template: 1fr / 1fr 1fr 1fr;
+  grid-gap: 0.3rem;
+  overflow-y: auto;
+  height: auto;
+  background-color: #313131;
+  padding: 0.5rem;
+  margin: 0 0.2rem 0 2rem;
+}
+
+.products__detail_container {
+  margin-left: 0.2rem;
+  background-color: rgb(44, 37, 26);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.products__detail_container p {
+  color: white;
+  margin: 0.3rem 0 0.3rem 0;
+}
+
+.section__image_box {
+  width: 30%;
+  /* height: 20vh; */
+  margin-top: 0.5rem;
+  background-color: #1c1c1c;
+  display: grid;
+  place-items: center;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
+}
+
+.section__image_box img {
+  width: 80%;
+  object-fit: contain;
+}

@@ -3,6 +3,7 @@ import { Grid, Slide } from "@material-ui/core";
 import db from "../firebase";
 import { storage } from "../firebase";
 import "./css/Home.css";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 
 //-> component imports
 import Input from "../common/Input";
@@ -14,6 +15,10 @@ import {
   notifyDynamicError,
 } from "../notifications/NotificationAlerts";
 import FormInput from "../common/FormInput";
+import PulseSpinner from "../common/PulseSpinner";
+import Product from "./subComponents/Product";
+import Card from "./subComponents/Card";
+import { GiTrashCan } from "react-icons/gi";
 
 const Home = () => {
   // -> intro states
@@ -46,7 +51,7 @@ const Home = () => {
   const [sectionThreeProgress, setSectionThreeProgress] = useState(0);
 
   const [projectImage, setProjectImage] = useState(null);
-  const [projectDescription, setProjectDescription] = useState('');
+  const [projectDescription, setProjectDescription] = useState("");
   const [projectProgress, setProjectProgress] = useState(0);
 
   //-> handling brain image input
@@ -544,17 +549,14 @@ const Home = () => {
             .getDownloadURL()
             .then((url) => {
               //-> post the image in the database
-              db.collection("home")
-                .doc("homeProjects")
-                .collection("all")
-                .add({
-                  projectImage: url,
-                  projectImageID: projectImageID,
-                  projectDescription: projectDescription,
-                });
+              db.collection("home").doc("homeProjects").collection("all").add({
+                projectImage: url,
+                projectImageID: projectImageID,
+                projectDescription: projectDescription,
+              });
               setProjectProgress(0);
               setProjectImage(null);
-              setProjectDescription('');
+              setProjectDescription("");
               notifyDynamicSuccess({
                 message: "Project updated successfully",
               });
@@ -563,6 +565,160 @@ const Home = () => {
       );
     } else {
       notifyDynamicError({ message: "Choose image to upload" });
+    }
+  };
+
+  // -> retrieve data from firestore database using firebase hooks
+  const [homeHeaderDetails] = useDocument(
+    db.collection("home").doc("homeIntro").collection("homeHeader").doc("info")
+  );
+  const [homeProductsDetails] = useCollection(
+    db.collection("home").doc("homeIntro").collection("homeProducts")
+  );
+  const [homeCardDetails] = useCollection(
+    db.collection("home").doc("homeCards").collection("all")
+  );
+  const [homeSectionOneHeader] = useDocument(
+    db
+      .collection("home")
+      .doc("homeSections")
+      .collection("sectionOne")
+      .doc("header")
+  );
+  const [homeSectionOneIntro] = useDocument(
+    db
+      .collection("home")
+      .doc("homeSections")
+      .collection("sectionOne")
+      .doc("intro")
+  );
+  const [homeSectionOneImage] = useDocument(
+    db
+      .collection("home")
+      .doc("homeSections")
+      .collection("sectionOne")
+      .doc("image")
+  );
+  const [homeSectionTwoHeader] = useDocument(
+    db
+      .collection("home")
+      .doc("homeSections")
+      .collection("sectionTwo")
+      .doc("header")
+  );
+  const [homeSectionTwoIntro] = useDocument(
+    db
+      .collection("home")
+      .doc("homeSections")
+      .collection("sectionTwo")
+      .doc("intro")
+  );
+  const [homeSectionTwoImage] = useDocument(
+    db
+      .collection("home")
+      .doc("homeSections")
+      .collection("sectionTwo")
+      .doc("image")
+  );
+  const [homeSectionThreeHeader] = useDocument(
+    db
+      .collection("home")
+      .doc("homeSections")
+      .collection("sectionThree")
+      .doc("header")
+  );
+  const [homeSectionThreeIntro] = useDocument(
+    db
+      .collection("home")
+      .doc("homeSections")
+      .collection("sectionThree")
+      .doc("intro")
+  );
+  const [homeSectionThreeImage] = useDocument(
+    db
+      .collection("home")
+      .doc("homeSections")
+      .collection("sectionThree")
+      .doc("image")
+  );
+
+  // Delete Section images
+  const deleteSectionOneImage = () => {
+    if (homeSectionOneImage?.data().sectionOneImageID) {
+      const imageID = homeSectionOneImage?.data().sectionOneImageID;
+
+      db.collection("home")
+        .doc("homeSections")
+        .collection("sectionOne")
+        .doc("image")
+        .delete()
+        .then(() => {
+          storage
+            .ref(`homeSectionImages/${imageID}`)
+            .delete()
+            .then(() => {
+              notifyDynamicSuccess({
+                message: "Section one image deleted successfully",
+              });
+            });
+        })
+        .catch((error) => {
+          notifyDynamicError({ message: error });
+        });
+    } else {
+      notifyDynamicError({ message: "No image to delete" });
+    }
+  };
+  const deleteSectionTwoImage = () => {
+    if (homeSectionTwoImage?.data().sectionTwoImageID) {
+      const imageID = homeSectionTwoImage?.data().sectionTwoImageID;
+
+      db.collection("home")
+        .doc("homeSections")
+        .collection("sectionTwo")
+        .doc("image")
+        .delete()
+        .then(() => {
+          storage
+            .ref(`homeSectionImages/${imageID}`)
+            .delete()
+            .then(() => {
+              notifyDynamicSuccess({
+                message: "Section two image deleted successfully",
+              });
+            });
+        })
+        .catch((error) => {
+          notifyDynamicError({ message: error });
+        });
+    } else {
+      notifyDynamicError({ message: "No image to delete" });
+    }
+  };
+  const deleteSectionThreeImage = () => {
+    if (homeSectionThreeImage?.data().sectionThreeImageID) {
+      const imageID = homeSectionThreeImage?.data().sectionThreeImageID;
+
+      db.collection("home")
+        .doc("homeSections")
+        .collection("sectionThree")
+        .doc("image")
+        .delete()
+        .then(() => {
+          storage
+            .ref(`homeSectionImages/${imageID}`)
+            .delete()
+            .then(() => {
+              notifyDynamicSuccess({
+                message: "Section three image deleted successfully",
+              });
+            });
+        })
+        .catch((error) => {
+          notifyDynamicError({ message: error });
+        });
+    } else {
+      notifyDynamicError({ message: "No image to delete" });
     }
   };
 
@@ -588,6 +744,18 @@ const Home = () => {
           <h4 id={"homeSectionHeaderDetails"}>[ Home header info Details ]</h4>
           <div className={"header__intro_box"}>
             {/* Home header details here */}
+            {homeHeaderDetails?.data() ? (
+              <h4>
+                <span id={"label"}>Current header set:</span>{" "}
+                {homeHeaderDetails?.data().homeHeader ? (
+                  homeHeaderDetails?.data().homeHeader
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
           </div>
         </Grid>
       </Grid>
@@ -609,9 +777,25 @@ const Home = () => {
         </Grid>
 
         <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
-          <h4 id={"homeSectionHeaderDetails"}>[ Home header info Details ]</h4>
-          <div className={"header__intro_box"}>
+          <h4 id={"homeSectionHeaderDetails"}>
+            [ Home products offered info Details ]
+          </h4>
+          <div className={"products__box"}>
             {/* dieplay products here */}
+            {homeProductsDetails?.docs ? (
+              homeProductsDetails?.docs.map((doc) => {
+                const { homeProduct } = doc.data();
+                return (
+                  <Product
+                    key={doc.id}
+                    homeProductID={doc.id}
+                    homeProduct={homeProduct}
+                  />
+                );
+              })
+            ) : (
+              <PulseSpinner />
+            )}
           </div>
         </Grid>
       </Grid>
@@ -669,7 +853,37 @@ const Home = () => {
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
           <h4 id={"homeSectionHeaderDetails"}>[ Home cards details here ]</h4>
-          <div className={"header__intro_box"}>{/* display cards here */}</div>
+          <div className={"products__box"}>
+            {/* display cards here */}
+            {homeCardDetails?.docs ? (
+              homeCardDetails?.docs.map((doc) => {
+                const {
+                  cardFeatureOne,
+                  cardFeatureTwo,
+                  cardFeatureThree,
+                  cardFeatureFour,
+                  cardHeader,
+                  cardImage,
+                  cardImageID,
+                } = doc.data();
+                return (
+                  <Card
+                    key={doc.id}
+                    cardID={doc.id}
+                    cardHeader={cardHeader}
+                    cardFeatureOne={cardFeatureOne}
+                    cardFeatureTwo={cardFeatureTwo}
+                    cardFeatureThree={cardFeatureThree}
+                    cardFeatureFour={cardFeatureFour}
+                    cardImage={cardImage}
+                    cardImageID={cardImageID}
+                  />
+                );
+              })
+            ) : (
+              <PulseSpinner />
+            )}
+          </div>
         </Grid>
       </Grid>
 
@@ -724,6 +938,55 @@ const Home = () => {
           </h4>
           <div className={"header__intro_box"}>
             {/* display section one info here */}
+            {homeSectionOneHeader?.data() ? (
+              <h4>
+                <span id={"label"}>Current header set:</span>{" "}
+                {homeSectionOneHeader?.data().sectionOneHeader ? (
+                  homeSectionOneHeader?.data().sectionOneHeader
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
+
+            {homeSectionOneIntro?.data() ? (
+              <h4>
+                <span id={"label"}>Current intro set:</span>{" "}
+                {homeSectionOneIntro?.data().sectionOneIntro ? (
+                  homeSectionOneIntro?.data().sectionOneIntro
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
+
+            <div className={"section__image_box"}>
+              {homeSectionOneImage?.data() ? (
+                homeSectionOneImage?.data().sectionOneImage &&
+                homeSectionOneImage?.data().sectionOneImageID ? (
+                  // homeSectionOneImage?.data().sectionOneImage
+                  <div>
+                    <img
+                      src={homeSectionOneImage?.data().sectionOneImage}
+                      alt={"section pic"}
+                    />
+                    <GiTrashCan
+                      size={"1.5rem"}
+                      className={"trash__icon"}
+                      onClick={() => deleteSectionOneImage()}
+                    />
+                  </div>
+                ) : (
+                  <PulseSpinner />
+                )
+              ) : (
+                <p id={"label"}> No image set</p>
+              )}
+            </div>
           </div>
         </Grid>
       </Grid>
@@ -778,7 +1041,56 @@ const Home = () => {
             [ Home section two details here ]
           </h4>
           <div className={"header__intro_box"}>
-            {/* display section one info here */}
+            {/* display section two info here */}
+            {homeSectionTwoHeader?.data() ? (
+              <h4>
+                <span id={"label"}>Current header set:</span>{" "}
+                {homeSectionTwoHeader?.data().sectionTwoHeader ? (
+                  homeSectionTwoHeader?.data().sectionTwoHeader
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
+
+            {homeSectionTwoIntro?.data() ? (
+              <h4>
+                <span id={"label"}>Current intro set:</span>{" "}
+                {homeSectionTwoIntro?.data().sectionTwoIntro ? (
+                  homeSectionTwoIntro?.data().sectionTwoIntro
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
+
+            <div className={"section__image_box"}>
+              {homeSectionTwoImage?.data() ? (
+                homeSectionTwoImage?.data().sectionTwoImage &&
+                homeSectionTwoImage?.data().sectionTwoImageID ? (
+                  // homeSectionOneImage?.data().sectionOneImage
+                  <div>
+                    <img
+                      src={homeSectionTwoImage?.data().sectionTwoImage}
+                      alt={"section pic"}
+                    />
+                    <GiTrashCan
+                      size={"1.5rem"}
+                      className={"trash__icon"}
+                      onClick={() => deleteSectionTwoImage()}
+                    />
+                  </div>
+                ) : (
+                  <PulseSpinner />
+                )
+              ) : (
+                <p id={"label"}> No image set</p>
+              )}
+            </div>
           </div>
         </Grid>
       </Grid>
@@ -834,6 +1146,55 @@ const Home = () => {
           </h4>
           <div className={"header__intro_box"}>
             {/* display section three info here */}
+            {homeSectionThreeHeader?.data() ? (
+              <h4>
+                <span id={"label"}>Current header set:</span>{" "}
+                {homeSectionThreeHeader?.data().sectionThreeHeader ? (
+                  homeSectionThreeHeader?.data().sectionThreeHeader
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
+
+            {homeSectionThreeIntro?.data() ? (
+              <h4>
+                <span id={"label"}>Current intro set:</span>{" "}
+                {homeSectionThreeIntro?.data().sectionThreeIntro ? (
+                  homeSectionThreeIntro?.data().sectionThreeIntro
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
+
+            <div className={"section__image_box"}>
+              {homeSectionThreeImage?.data() ? (
+                homeSectionThreeImage?.data().sectionThreeImage &&
+                homeSectionThreeImage?.data().sectionThreeImageID ? (
+                  // homeSectionOneImage?.data().sectionOneImage
+                  <div>
+                    <img
+                      src={homeSectionThreeImage?.data().sectionThreeImage}
+                      alt={"section pic"}
+                    />
+                    <GiTrashCan
+                      size={"1.5rem"}
+                      className={"trash__icon"}
+                      onClick={() => deleteSectionThreeImage()}
+                    />
+                  </div>
+                ) : (
+                  <PulseSpinner />
+                )
+              ) : (
+                <p id={"label"}> No image set</p>
+              )}
+            </div>
           </div>
         </Grid>
       </Grid>
