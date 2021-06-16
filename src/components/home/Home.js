@@ -19,6 +19,7 @@ import PulseSpinner from "../common/PulseSpinner";
 import Product from "./subComponents/Product";
 import Card from "./subComponents/Card";
 import { GiTrashCan } from "react-icons/gi";
+import Project from "./subComponents/Project";
 
 const Home = () => {
   // -> intro states
@@ -641,6 +642,9 @@ const Home = () => {
       .collection("sectionThree")
       .doc("image")
   );
+  const [homeProjectsDetails] = useCollection(
+    db.collection("home").doc("homeProjects").collection("all")
+  );
 
   // Delete Section images
   const deleteSectionOneImage = () => {
@@ -1231,6 +1235,29 @@ const Home = () => {
           </h4>
           <div className={"header__intro_box"}>
             {/* display combo project images here */}
+            <div className={"products__box"}>
+              {/* display cards here */}
+              {homeProjectsDetails?.docs ? (
+                homeProjectsDetails?.docs.map((doc) => {
+                  const {
+                    projectDescription,
+                    projectImage,
+                    projectImageID,
+                  } = doc.data();
+                  return (
+                    <Project
+                      key={doc.id}
+                      projectID={doc.id}
+                      projectDescription={projectDescription}
+                      projectImage={projectImage}
+                      projectImageID={projectImageID}
+                    />
+                  );
+                })
+              ) : (
+                <PulseSpinner />
+              )}
+            </div>
           </div>
         </Grid>
       </Grid>
