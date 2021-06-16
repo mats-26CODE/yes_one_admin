@@ -311,14 +311,31 @@ const Careers = () => {
             [ Page header and introduction current details ]
           </h4>
           <div className={"header__intro_box"}>
-            <h4>
-              <span id={"label"}>Current header set:</span>{" "}
-              { headerDetails?.data().careerHeader ? headerDetails?.data().careerHeader : <PulseSpinner/>}
-            </h4>
-            <h4>
-              <span id={"label"}>Current intro set:</span>{" "}
-              {introDetails?.data().careerIntro ? introDetails?.data().careerIntro : <PulseSpinner/>}
-            </h4>
+            {headerDetails?.data() ? (
+              <h4>
+                <span id={"label"}>Current header set:</span>{" "}
+                {headerDetails?.data().careerHeader ? (
+                  headerDetails?.data().careerHeader
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
+
+            {introDetails?.data() ? (
+              <h4>
+                <span id={"label"}>Current intro set:</span>{" "}
+                {introDetails?.data().careerIntro ? (
+                  introDetails?.data().careerIntro
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
           </div>
         </Grid>
       </Grid>
@@ -357,27 +374,31 @@ const Careers = () => {
         <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
           <h4 id={"sectionHeaderDetails"}>[ Page Current Job Posts ]</h4>
           <div className={"job__posts"}>
-            {jobPosts?.docs ? jobPosts?.docs.map((doc) => {
-              const {
-                careerPostHeader,
-                careerPostLink,
-                careerPostOutro,
-                careerPostSkills,
-                datePosted,
-              } = doc.data();
+            {jobPosts?.docs ? (
+              jobPosts?.docs.map((doc) => {
+                const {
+                  careerPostHeader,
+                  careerPostLink,
+                  careerPostOutro,
+                  careerPostSkills,
+                  datePosted,
+                } = doc.data();
 
-              return (
-                <JobPost
-                  key={doc.id}
-                  jobPostId={doc.id}
-                  careerPostHeader={careerPostHeader}
-                  careerPostLink={careerPostLink}
-                  careerPostOutro={careerPostOutro}
-                  careerPostSkills={careerPostSkills}
-                  datePosted={datePosted}
-                />
-              );
-            }): <PulseSpinner/>}
+                return (
+                  <JobPost
+                    key={doc.id}
+                    jobPostId={doc.id}
+                    careerPostHeader={careerPostHeader}
+                    careerPostLink={careerPostLink}
+                    careerPostOutro={careerPostOutro}
+                    careerPostSkills={careerPostSkills}
+                    datePosted={datePosted}
+                  />
+                );
+              })
+            ) : (
+              <PulseSpinner />
+            )}
           </div>
         </Grid>
       </Grid>
@@ -398,13 +419,23 @@ const Careers = () => {
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-          <h4 id={"sectionHeaderDetails"}>[ Page Current Join Header Details ]</h4>
+          <h4 id={"sectionHeaderDetails"}>
+            [ Page Current Join Header Details ]
+          </h4>
 
           <div className={"header__intro_box"}>
-            <h4>
-              <span id={"label"}>Current join team header:</span>{" "}
-              {joinHeaderDetails?.data().careerJoinHeader? joinHeaderDetails?.data().careerJoinHeader: <PulseSpinner/>}
-            </h4>
+            {joinHeaderDetails?.data() ? (
+              <h4>
+                <span id={"label"}>Current join team header:</span>{" "}
+                {joinHeaderDetails?.data().careerJoinHeader ? (
+                  joinHeaderDetails?.data().careerJoinHeader
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
           </div>
         </Grid>
       </Grid>
@@ -443,20 +474,48 @@ const Careers = () => {
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-          <h4 id={"sectionHeaderDetails"}>[ Page Current Career Love Details ]</h4>
+          <h4 id={"sectionHeaderDetails"}>
+            [ Page Current Career Love Details ]
+          </h4>
           <div className={"header__intro_box"}>
-            <h4>
-              <span id={"label"}>Career love one:</span>{" "}
-              {careerLoveDetails?.data().careerLoveOne ? careerLoveDetails?.data().careerLoveOne: <PulseSpinner/>}
-            </h4>
-            <h4>
-              <span id={"label"}>Career love two:</span>{" "}
-              {careerLoveDetails?.data().careerLoveTwo ? careerLoveDetails?.data().careerLoveTwo: <PulseSpinner/>}
-            </h4>
-            <h4>
-              <span id={"label"}>Career love three:</span>{" "}
-              {careerLoveDetails?.data().careerLoveThree ? careerLoveDetails?.data().careerLoveThree: <PulseSpinner/>}
-            </h4>
+            {careerLoveDetails?.data() ? (
+              <h4>
+                <span id={"label"}>Career love one:</span>{" "}
+                {careerLoveDetails?.data().careerLoveOne ? (
+                  careerLoveDetails?.data().careerLoveOne
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
+
+            {careerLoveDetails?.data() ? (
+              <h4>
+                <span id={"label"}>Career love two:</span>{" "}
+                {careerLoveDetails?.data().careerLoveTwo ? (
+                  careerLoveDetails?.data().careerLoveTwo
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
+
+            {careerLoveDetails?.data() ? (
+              <h4>
+                <span id={"label"}>Career love three:</span>{" "}
+                {careerLoveDetails?.data().careerLoveThree ? (
+                  careerLoveDetails?.data().careerLoveThree
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
           </div>
         </Grid>
       </Grid>
@@ -477,12 +536,22 @@ const Careers = () => {
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-          <h4 id={"sectionHeaderDetails"}>[ Page Current Career Spot Availability Details ]</h4>
+          <h4 id={"sectionHeaderDetails"}>
+            [ Page Current Career Spot Availability Details ]
+          </h4>
           <div className={"header__intro_box"}>
-            <h4>
-              <span id={"label"}>Current career spot availability: </span>{" "}
-              {careerSpotDetails?.data().careerSpot ? careerSpotDetails?.data().careerSpot: <PulseSpinner/>}
-            </h4>
+            {careerSpotDetails?.data() ? (
+              <h4>
+                <span id={"label"}>Current career spot availability: </span>{" "}
+                {careerSpotDetails?.data().careerSpot ? (
+                  careerSpotDetails?.data().careerSpot
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
           </div>
         </Grid>
       </Grid>

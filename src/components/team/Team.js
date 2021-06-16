@@ -345,22 +345,31 @@ const Team = () => {
           <h4 id={"sectionHeaderDetails"}>[ Page header and intro details ]</h4>
           <div className={"header__intro_box"}>
             {/* display team and header details here */}
-            <h4>
-              <span id={"label"}>Current header set:</span>{" "}
-              {headerDetails?.data().teamHeader ? (
-                headerDetails?.data().teamHeader
-              ) : (
-                <PulseSpinner />
-              )}
-            </h4>
-            <h4>
-              <span id={"label"}>Current intro set:</span>{" "}
-              {introDetails?.data().teamIntro ? (
-                introDetails?.data().teamIntro
-              ) : (
-                <PulseSpinner />
-              )}
-            </h4>
+            {headerDetails?.data() ? (
+              <h4>
+                <span id={"label"}>Current header set:</span>{" "}
+                {headerDetails?.data().teamHeader ? (
+                  headerDetails?.data().teamHeader
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
+
+            {introDetails?.data() ? (
+              <h4>
+                <span id={"label"}>Current intro set:</span>{" "}
+                {introDetails?.data().teamIntro ? (
+                  introDetails?.data().teamIntro
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
           </div>
         </Grid>
       </Grid>
@@ -530,14 +539,18 @@ const Team = () => {
           <h4 id={"sectionHeaderDetails"}>[ Client's treat details ]</h4>
           <div className={"header__intro_box"}>
             {/* display client treat here */}
-            <h4>
-              <span id={"label"}>Our treat:</span>{" "}
-              {clientTreatDetails?.data().clientTreat ? (
-                clientTreatDetails?.data().clientTreat
-              ) : (
-                <PulseSpinner />
-              )}
-            </h4>
+            {clientTreatDetails?.data() ? (
+              <h4>
+                <span id={"label"}>Our treat:</span>{" "}
+                {clientTreatDetails?.data().clientTreat ? (
+                  clientTreatDetails?.data().clientTreat
+                ) : (
+                  <PulseSpinner />
+                )}
+              </h4>
+            ) : (
+              <PulseSpinner />
+            )}
           </div>
         </Grid>
       </Grid>

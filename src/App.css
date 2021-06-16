@@ -47,6 +47,10 @@
   transition: all 0.5s;
 }
 
+.nav_bar ul li .active {
+  opacity: .5;
+}
+
 .logoutIconBox {
   position: absolute;
   bottom: 5%;
