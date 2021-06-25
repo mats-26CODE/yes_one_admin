@@ -47,7 +47,7 @@ const Careers = () => {
         .doc("careerHeaderIntro")
         .collection("info")
         .doc("careerHeader")
-        .update({
+        .set({
           careerHeader: careerHeader,
         })
         .then(() => {
@@ -73,7 +73,7 @@ const Careers = () => {
         .doc("careerHeaderIntro")
         .collection("info")
         .doc("careerIntro")
-        .update({
+        .set({
           careerIntro: careerIntro,
         })
         .then(() => {
@@ -306,7 +306,7 @@ const Careers = () => {
             />
           </div>
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+        <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
           <h4 id={"sectionHeaderDetails"}>
             [ Page header and introduction current details ]
           </h4>

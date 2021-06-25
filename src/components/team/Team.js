@@ -341,7 +341,7 @@ const Team = () => {
             </div>
           </div>
         </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+        <Grid item xs={12} sm={12} md={6} lg={8} xl={8}>
           <h4 id={"sectionHeaderDetails"}>[ Page header and intro details ]</h4>
           <div className={"header__intro_box"}>
             {/* display team and header details here */}
