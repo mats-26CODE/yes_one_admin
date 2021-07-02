@@ -71,6 +71,10 @@ const Main = () => {
                 <RiAdminLine size={"1em"} color={"#f2f5ff"} />
                 <h4>Hola!, {user.displayName}</h4>
               </div>
+              
+              <div>
+                <h4>ADMIN PANEL, CHANGE AND UPDATE SITE CONTENTS</h4>
+              </div>
 
               <div>
                 <BiLogOut
