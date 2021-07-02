@@ -1,0 +1,44 @@
+.design__container {
+    padding: 1.5rem;
+    background-color: #424242;
+    min-height: 100vh;
+}
+
+.design__container > div {
+    margin: 2rem auto;
+}
+
+#sectionHeader {
+    font-size: 1rem;
+    color: #F5A522;
+    margin: 0.3rem 0 0.3rem 0;
+}
+
+#sectionHeaderDetails {
+    font-size: 1rem;
+    color: #F5A522;
+    margin: 0.3rem 0 0.3rem 2rem;
+}
+
+.products__box {
+    display: grid;
+    grid-template: 1fr / 1fr 1fr;
+    grid-gap: 0.3rem;
+    overflow-y: auto;
+    height: auto;
+    background-color: #313131;
+    padding: 0.5rem;
+    margin: 0 0.2rem 0 2rem;
+  }
+
+.design__detail_container {
+    margin-left: 0.2rem;
+    background-color: rgb(44, 37, 26);
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .design__detail_container p {
+    color: white;
+    margin: 0.3rem 0 0.3rem 0;
+  }
