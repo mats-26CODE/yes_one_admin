@@ -1,67 +1,67 @@
 .career__container {
-    padding: 1.5rem;
-    background-color: #424242;
-    min-height: 100vh;
+  padding: 1.5rem;
+  background-color: #424242;
+  min-height: 100vh;
 }
 
 .career__container > div {
-    margin: 2rem auto;
+  margin: 2rem auto;
 }
 
 .career__box_fill {
-    /* display: flex; */
+  /* display: flex; */
 }
 
 .header__intro_box {
-    margin-left: 2rem;
-    background-color: rgb(44, 37, 26);
-    padding: 10px;
-    border-radius: 5px;
+  margin-left: 2rem;
+  background-color: rgb(44, 37, 26);
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .job__post_container {
-    margin-left: 0.2rem;
-    background-color: rgb(44, 37, 26);
-    padding: 10px;
-    border-radius: 5px;
+  margin-left: 0.2rem;
+  background-color: rgb(44, 37, 26);
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .header__intro_box h4,
 .job__post_container p {
-    color: white;
-    margin: 0.3rem 0 0.3rem 0;
+  color: white;
+  margin: 0.3rem 0 0.3rem 0;
 }
 
 #label {
-    font-size: 0.9rem;
-    color: #F5A522;
+  font-size: 0.9rem;
+  color: #f5a522;
 }
 
 .job__post_container > div:first-child {
-    /* width: 100%; */
-    display: flex;
-    justify-content: space-between;
+  /* width: 100%; */
+  display: flex;
+  justify-content: space-between;
 }
 
 .job__posts {
-    display: grid;
-    grid-template: 1fr / 1fr 1fr;
-    grid-gap: 0.3rem;
-    overflow-y: auto;
-    height: 35vh;
-    background-color: #313131;
-    padding: 0.5rem;
-    margin: 0 0.2rem 0 2rem;
+  display: grid;
+  grid-template: 1fr / 1fr 1fr;
+  grid-gap: 0.3rem;
+  overflow-y: auto;
+  height: 35vh;
+  background-color: #313131;
+  padding: 0.5rem;
+  margin: 0 0.2rem 0 2rem;
 }
 
 #sectionHeader {
-    font-size: 1rem;
-    color: #F5A522;
-    margin: 0.3rem 0 0.3rem 0;
+  font-size: 1rem;
+  color: #f5a522;
+  margin: 0.3rem 0 0.3rem 0;
 }
 
 #sectionHeaderDetails {
-    font-size: 1rem;
-    color: #F5A522;
-    margin: 0.3rem 0 0.3rem 2rem;
+  font-size: 1rem;
+  color: #f5a522;
+  margin: 0.3rem 0 0.3rem 2rem;
 }

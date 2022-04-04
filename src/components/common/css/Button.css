@@ -1,25 +1,25 @@
 .button__container {
-    margin: 5px;
+  margin: 5px;
 }
 
 .button__container button {
-    width: 100%;
-    border-radius: 20px;
-    border: none;
-    background-color: #F5A522;
-    display: inline-block;
-    font-size: medium;
-    font-weight: normal;
-    padding: 10px;
-    color: #070707;
-    transition: all .3s;
-    outline: none;
+  width: 100%;
+  border-radius: 20px;
+  border: none;
+  background-color: #f5a522;
+  display: inline-block;
+  font-size: medium;
+  font-weight: normal;
+  padding: 10px;
+  color: #070707;
+  transition: all 0.3s;
+  outline: none;
 }
 
 .button__container button:hover {
-    transition: all .5s;
-    transform: scale(1.02);
-    cursor: pointer;
-    background-color: #171719;
-    color: white;
+  transition: all 0.5s;
+  transform: scale(1.02);
+  cursor: pointer;
+  background-color: #171719;
+  color: white;
 }

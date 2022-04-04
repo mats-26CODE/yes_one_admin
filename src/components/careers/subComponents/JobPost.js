@@ -2,7 +2,10 @@ import React from "react";
 import { FcBriefcase } from "react-icons/fc";
 import { GiTrashCan } from "react-icons/gi";
 import db from "../../firebase";
-import { notifyDynamicError, notifyDynamicSuccess } from "../../notifications/NotificationAlerts";
+import {
+  notifyDynamicError,
+  notifyDynamicSuccess,
+} from "../../notifications/NotificationAlerts";
 
 const JobPost = ({
   careerPostHeader,
@@ -13,15 +16,18 @@ const JobPost = ({
   jobPostId,
 }) => {
   const deleteJobPost = (jobPostId) => {
-    if(jobPostId){
-        db.collection('careers').doc('careerJobPosts').collection('info').doc(jobPostId)
+    if (jobPostId) {
+      db.collection("careers")
+        .doc("careerJobPosts")
+        .collection("info")
+        .doc(jobPostId)
         .delete()
         .then(() => {
-            notifyDynamicSuccess({ message: 'Job post deleted successfully'});
+          notifyDynamicSuccess({ message: "Job post deleted successfully" });
         })
         .catch((error) => {
-            notifyDynamicError({ message: error });
-        })
+          notifyDynamicError({ message: error });
+        });
     }
   };
   return (

@@ -50,10 +50,10 @@ export const notifyDynamicSuccess = ({ message }) =>
     },
   });
 
-export const notifyingLoading = ({message}) =>
+export const notifyingLoading = ({ message }) =>
   toast.promise({
     // message: `${message}`,
-    loading: 'Saving.....',
+    loading: "Saving.....",
     success: <b>Settings saved!</b>,
     error: <b>Could not save.</b>,
   });

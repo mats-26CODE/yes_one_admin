@@ -1,8 +1,8 @@
 import React from "react";
 import db from "../../firebase";
-import firebase from 'firebase';
+import firebase from "firebase";
 import Avatar from "@material-ui/core/Avatar";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 import {
   notifyDynamicError,
   notifyDynamicSuccess,
@@ -18,7 +18,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Brain = ({ brainName, brainTitle, brainImage, brainId, brainImageID}) => {
+const Brain = ({
+  brainName,
+  brainTitle,
+  brainImage,
+  brainId,
+  brainImageID,
+}) => {
   const classes = useStyles();
   const deleteBrain = (brainId) => {
     if (brainId && brainImageID) {
@@ -28,10 +34,15 @@ const Brain = ({ brainName, brainTitle, brainImage, brainId, brainImageID}) => {
         .doc(brainId)
         .delete()
         .then(() => {
-          firebase.storage().ref(`teamBrainsImages/${brainImageID}`).delete()
-          .then (() => {
-            notifyDynamicSuccess({ message: "Team brain deleted successfully" });
-          })
+          firebase
+            .storage()
+            .ref(`teamBrainsImages/${brainImageID}`)
+            .delete()
+            .then(() => {
+              notifyDynamicSuccess({
+                message: "Team brain deleted successfully",
+              });
+            });
         })
         .catch((error) => {
           notifyDynamicError({ message: error });

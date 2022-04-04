@@ -53,7 +53,7 @@ const Card = ({
     }
   };
   return (
-    <div className={'products__detail_container'}>
+    <div className={"products__detail_container"}>
       <div>
         <GiTrashCan
           size={"1.5rem"}

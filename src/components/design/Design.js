@@ -316,13 +316,10 @@ const Design = () => {
             .getDownloadURL()
             .then((url) => {
               //-> post the image in the database
-              db.collection("design")
-                .doc("designs")
-                .collection("images")
-                .add({
-                  designImage: url,
-                  designImageID: designImageID,
-                });
+              db.collection("design").doc("designs").collection("images").add({
+                designImage: url,
+                designImageID: designImageID,
+              });
               setDesignProgress(0);
               setDesignImage(null);
               notifyDynamicSuccess({
@@ -649,19 +646,14 @@ const Design = () => {
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
-          <h4 id={"homeSectionHeaderDetails"}>
-            [ Designs images here ]
-          </h4>
+          <h4 id={"homeSectionHeaderDetails"}>[ Designs images here ]</h4>
           <div className={"header__intro_box"}>
             {/* display combo project images here */}
             <div className={"designs__image_box"}>
               {/* display cards here */}
               {designImagesDetails?.docs ? (
                 designImagesDetails?.docs.map((doc) => {
-                  const {
-                    designImage,
-                    designImageID,
-                  } = doc.data();
+                  const { designImage, designImageID } = doc.data();
                   return (
                     <DesignImage
                       key={doc.id}

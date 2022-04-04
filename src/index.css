@@ -2,22 +2,22 @@
   margin: 0;
 }
 
-@font-face{
-  font-family: 'sofiaProLight';
-  src: local('sofiaProLight'), url('./assets/fonts/sofiaProLight.otf') format('true');
+@font-face {
+  font-family: "sofiaProLight";
+  src: url("./assets/fonts/sofiaProLight.otf") format("true");
   font-weight: normal;
 }
 
 body {
   margin: 0;
-  font-family: 'sofiaProLight', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "sofiaProLight", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }

@@ -100,7 +100,7 @@ const Development = () => {
       setDevQuoteImage(null);
       notifyDynamicError({ message: "Image selected should not exceed 3MB" });
     } else {
-        setDevQuoteImage(e.target.files[0]);
+      setDevQuoteImage(e.target.files[0]);
     }
   };
 

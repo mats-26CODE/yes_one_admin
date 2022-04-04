@@ -11,7 +11,7 @@ import {
 import { GiTrashCan } from "react-icons/gi";
 
 const DesignImage = ({ designID, designImage, designImageID }) => {
-  const deleteDesign= () => {
+  const deleteDesign = () => {
     if (designID && designImageID) {
       db.collection("design")
         .doc("designs")
@@ -35,7 +35,7 @@ const DesignImage = ({ designID, designImage, designImageID }) => {
     }
   };
   return (
-    <div className={'design__image_container'}>
+    <div className={"design__image_container"}>
       <div>
         <GiTrashCan
           size={"1.5rem"}
@@ -44,8 +44,8 @@ const DesignImage = ({ designID, designImage, designImageID }) => {
         />
       </div>
       <div className={"design__image"}>
-          <img src={designImage} alt={"project pic"} />
-        </div>
+        <img src={designImage} alt={"project pic"} />
+      </div>
     </div>
   );
 };

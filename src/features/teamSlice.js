@@ -25,17 +25,13 @@ const teamSlice = createSlice({
       state.teamTrait = action.payload;
     },
     fetchTeamTraits: (state, action) => {
-        state.teamTraits = action.payload;
-    }
+      state.teamTraits = action.payload;
+    },
   },
 });
 
-export const {
-  saveTeamIntro,
-  fetchTeamInfo,
-  saveTeamTrait,
-  fetchTeamTraits
-} = teamSlice.actions;
+export const { saveTeamIntro, fetchTeamInfo, saveTeamTrait, fetchTeamTraits } =
+  teamSlice.actions;
 
 export const selectTeam = (state) => state.team.teamInfo;
 export const selectTeamTraits = (state) => state.team.teamTraits;

@@ -26,7 +26,9 @@ const Trait = ({ teamTrait, traitId }) => {
   };
   return (
     <div className={"trait_container"}>
-      <p><span id={"label"}>Trait:</span> {teamTrait}</p>
+      <p>
+        <span id={"label"}>Trait:</span> {teamTrait}
+      </p>
       <TiTimes
         size={"1.5rem"}
         className={"clear__icon"}

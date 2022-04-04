@@ -1,15 +1,16 @@
 .input__container {
-    background-color: #3a3a3a;
-    padding: 10px;
-    border-radius: 3px;
+  background-color: #3a3a3a;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 0.2rem;
 }
 
 .input__container > input {
-    outline: none;
-    width: 96%;
-    padding: 8px;
-    background-color: rgb(70, 70, 70, 0.8);
-    border: none;
-    color: white;
-    font-size: 0.95rem;
+  outline: none;
+  width: 96%;
+  padding: 8px;
+  background-color: rgb(70, 70, 70, 0.8);
+  border: none;
+  color: white;
+  font-size: 0.95rem;
 }

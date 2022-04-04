@@ -56,7 +56,7 @@ const Login = () => {
         </form>
 
         <p>
-          Not Registered ? <NavLink to="/sign-up">Register</NavLink>
+          {/* Not Registered ? <NavLink to="/sign-up">Register</NavLink> */}
         </p>
       </div>
     </div>

@@ -1239,11 +1239,8 @@ const Home = () => {
               {/* display cards here */}
               {homeProjectsDetails?.docs ? (
                 homeProjectsDetails?.docs.map((doc) => {
-                  const {
-                    projectDescription,
-                    projectImage,
-                    projectImageID,
-                  } = doc.data();
+                  const { projectDescription, projectImage, projectImageID } =
+                    doc.data();
                   return (
                     <Project
                       key={doc.id}
