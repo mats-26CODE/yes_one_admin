@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Grid } from "@material-ui/core";
 import db from "../firebase";
 import firebase from "firebase";
@@ -7,6 +7,7 @@ import { useDocument, useCollection } from "react-firebase-hooks/firestore";
 //->component imports
 import Input from "../common/Input";
 import Button from "../common/Button";
+import { storage } from "../firebase";
 import {
   notifyDynamicSuccess,
   notifyDynamicError,
@@ -16,6 +17,7 @@ import FormInput from "../common/FormInput";
 import "./css/Careers.css";
 import JobPost from "./subComponents/JobPost";
 import PulseSpinner from "../common/PulseSpinner";
+import { GiTrashCan } from "react-icons/gi";
 
 const Careers = () => {
   const [careerHeader, setCareerHeader] = useState("");
@@ -29,12 +31,25 @@ const Careers = () => {
   const [careerLoveTwo, setCareerLoveTwo] = useState("");
   const [careerLoveThree, setCareerLoveThree] = useState("");
   const [careerSpot, setCareerSpot] = useState("");
+  const [careerImage, setCareerImage] = useState(null);
+  const [careerProgress, setCareerProgress] = useState(0);
 
   const [loading, setLoading] = useState(false);
 
   const buttonLoading = () => {
     if (loading) {
       notifyingLoading({ message: "Updating....." });
+    }
+  };
+
+  //-> handle image file inputs
+  const handleCareerImage = (e) => {
+    const file = e.target.files[0];
+    if (file.size > 3e6) {
+      careerImage(null);
+      notifyDynamicError({ message: "Image selected should not exceed 3MB" });
+    } else {
+      setCareerImage(e.target.files[0]);
     }
   };
 
@@ -241,6 +256,89 @@ const Careers = () => {
     }
   };
 
+  const saveCareerImage = (e) => {
+    e.preventDefault();
+    if (careerImage) {
+      const careerImageID = Math.random()
+        .toString(36)
+        .substring(6)
+        .toUpperCase();
+
+      const uploadTask = storage
+        .ref(`careerImages/${careerImageID}`)
+        .put(careerImage);
+
+      //-> This code gets you the progress of the image upload
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // progress function
+          const careerProgress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setCareerProgress(careerProgress);
+        },
+        (error) => {
+          //error function
+          console.log(error);
+          notifyDynamicError({ message: error });
+        },
+        () => {
+          // complete upload function
+          storage
+            .ref("careerImages")
+            .child(careerImageID)
+            .getDownloadURL()
+            .then((url) => {
+              //-> post the image in the database
+              db.collection("careers")
+                .doc("careerHeaderIntro")
+                .collection("illustration")
+                .doc("image")
+                .set({
+                  careerImage: url,
+                  careerImageID: careerImageID,
+                });
+              setCareerProgress(0);
+              setCareerImage(null);
+              notifyDynamicSuccess({
+                message: "Career image updated successfully",
+              });
+            });
+        }
+      );
+    } else {
+      notifyDynamicError({ message: "Choose an image to upload" });
+    }
+  };
+
+  const deleteCareerImage = () => {
+    if (careerImageDetails?.data().careerImageID) {
+      const imageID = careerImageDetails?.data().careerImageID;
+
+      db.collection("careers")
+        .doc("careerHeaderIntro")
+        .collection("illustration")
+        .doc("image")
+        .delete()
+        .then(() => {
+          storage
+            .ref(`careerImages/${imageID}`)
+            .delete()
+            .then(() => {
+              notifyDynamicSuccess({
+                message: "Career image deleted successfully",
+              });
+            });
+        })
+        .catch((error) => {
+          notifyDynamicError({ message: error });
+        });
+    } else {
+      notifyDynamicError({ message: "No image to delete" });
+    }
+  };
+
   //-> retrieve data from firestore database using firebase hooks
   const [headerDetails] = useDocument(
     db
@@ -276,7 +374,13 @@ const Careers = () => {
   const [careerSpotDetails] = useDocument(
     db.collection("careers").doc("careerSpot")
   );
-  console.log("career spot: ", careerSpotDetails?.data());
+  const [careerImageDetails] = useDocument(
+    db
+      .collection("careers")
+      .doc("careerHeaderIntro")
+      .collection("illustration")
+      .doc("image")
+  );
 
   return (
     <div className={"career__container"}>
@@ -336,6 +440,55 @@ const Careers = () => {
             ) : (
               <PulseSpinner />
             )}
+          </div>
+        </Grid>
+      </Grid>
+
+      <Grid container>
+        <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <h4 id={"sectionHeader"}>[ Career Image here]</h4>
+          <div>
+            <Input
+              type={"file"}
+              placeholder={"Enter careers image"}
+              onChange={handleCareerImage}
+              accept={"image/*"}
+            />
+            {careerProgress > 0 ? (
+              <div className={"upload__progress_bar"}>
+                <progress value={careerProgress} max="100" />
+              </div>
+            ) : (
+              <Button onClick={saveCareerImage} text={"Add"} type={"submit"} />
+            )}
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+          <h4 id={"sectionHeaderDetails"}>[Career image details here ]</h4>
+          <div className={"header__intro_box"}>
+            <div className={"section__image_box"}>
+              {careerImageDetails?.data() ? (
+                careerImageDetails?.data().careerImage &&
+                careerImageDetails?.data().careerImageID ? (
+                  // devSectionOneImage?.data().sectionOneImage
+                  <div>
+                    <img
+                      src={careerImageDetails?.data().careerImage}
+                      alt={"section pic"}
+                    />
+                    <GiTrashCan
+                      size={"1.5rem"}
+                      className={"trash__icon"}
+                      onClick={() => deleteCareerImage()}
+                    />
+                  </div>
+                ) : (
+                  <PulseSpinner />
+                )
+              ) : (
+                <p id={"label"}> No image set</p>
+              )}
+            </div>
           </div>
         </Grid>
       </Grid>

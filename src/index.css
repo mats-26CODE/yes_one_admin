@@ -4,8 +4,7 @@
 
 @font-face {
   font-family: "sofiaProLight";
-  src: url("./assets/fonts/sofiaProLight.otf") format("true");
-  font-weight: normal;
+  src: url("./assets/fonts/sofiaProLight.otf") format("truetype");
 }
 
 body {

@@ -1,8 +1,6 @@
 import React from "react";
 import db from "../../firebase";
 import firebase from "firebase";
-import Avatar from "@material-ui/core/Avatar";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   notifyDynamicError,
   notifyDynamicSuccess,

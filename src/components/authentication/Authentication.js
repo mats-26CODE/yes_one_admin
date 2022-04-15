@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, NavLink, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter } from "react-router-dom";
 import Login from "./Login";
 import Signup from "./Signup";
 

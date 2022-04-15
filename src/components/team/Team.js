@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Grid } from "@material-ui/core";
 import "./css/Team.css";
 import db from "../firebase";
@@ -11,19 +11,9 @@ import Button from "../common/Button";
 import {
   notifyDynamicError,
   notifyDynamicSuccess,
-  notifyError,
 } from "../notifications/NotificationAlerts";
 
 //-> redux imports
-import { useDispatch, useSelector } from "react-redux";
-import {
-  saveTeamIntro,
-  fetchTeamInfo,
-  selectTeam,
-  saveTeamTrait,
-  fetchTeamTraits,
-  selectTeamTraits,
-} from "../../features/teamSlice";
 import FormInput from "../common/FormInput";
 import Brain from "./subComponents/Brain";
 import PulseSpinner from "../common/PulseSpinner";
@@ -42,10 +32,6 @@ const Team = () => {
   const [clientName, setClientName] = useState("");
   const [clientLogo, setClientLogo] = useState("");
   const [clientTreat, setClientTreat] = useState("");
-
-  const dispatch = useDispatch();
-  // const team = useSelector(selectTeam);
-  // const trait = useSelector(selectTeamTraits)
 
   //-> handling brain image input
   // Handle file picker changes

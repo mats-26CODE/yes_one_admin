@@ -65,3 +65,15 @@
   color: #f5a522;
   margin: 0.3rem 0 0.3rem 2rem;
 }
+
+.products__detail_container {
+  margin-left: 0.2rem;
+  background-color: rgb(44, 37, 26);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.products__detail_container p {
+  color: white;
+  margin: 0.3rem 0 0.3rem 0;
+}

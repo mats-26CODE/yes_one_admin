@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Grid, Slide } from "@material-ui/core";
+import React, { useState } from "react";
+import { Grid } from "@material-ui/core";
 import db from "../firebase";
 import { storage } from "../firebase";
 import "./css/Home.css";
@@ -9,8 +9,6 @@ import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import Input from "../common/Input";
 import Button from "../common/Button";
 import {
-  notifySuccess,
-  notifyError,
   notifyDynamicSuccess,
   notifyDynamicError,
 } from "../notifications/NotificationAlerts";

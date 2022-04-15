@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Grid } from "@material-ui/core";
 import db from "../firebase";
-import firebase from "firebase";
 import { storage } from "../firebase";
 import { useDocument, useCollection } from "react-firebase-hooks/firestore";
 
@@ -19,6 +18,7 @@ import "./css/Development.css";
 
 //-> react icon imports
 import { GiTrashCan } from "react-icons/gi";
+import Trait from "./subComponents/TraitOne";
 
 const Development = () => {
   const [devHeader, setDevHeader] = useState("");
@@ -27,21 +27,25 @@ const Development = () => {
   //-> sections states
   const [sectionOneHeader, setSectionOneHeader] = useState("");
   const [sectionOneIntro, setSectionOneIntro] = useState("");
+  const [sectionOneTrait, setSectionOneTrait] = useState("");
   const [sectionOneImage, setSectionOneImage] = useState(null);
   const [sectionOneProgress, setSectionOneProgress] = useState(0);
 
   const [sectionTwoHeader, setSectionTwoHeader] = useState("");
   const [sectionTwoIntro, setSectionTwoIntro] = useState("");
+  const [sectionTwoTrait, setSectionTwoTrait] = useState("");
   const [sectionTwoImage, setSectionTwoImage] = useState(null);
   const [sectionTwoProgress, setSectionTwoProgress] = useState(0);
 
   const [sectionThreeIntro, setSectionThreeIntro] = useState("");
   const [sectionThreeHeader, setSectionThreeHeader] = useState("");
+  const [sectionThreeTrait, setSectionThreeTrait] = useState("");
   const [sectionThreeImage, setSectionThreeImage] = useState(null);
   const [sectionThreeProgress, setSectionThreeProgress] = useState(0);
 
   const [sectionFourIntro, setSectionFourIntro] = useState("");
   const [sectionFourHeader, setSectionFourHeader] = useState("");
+  const [sectionFourTrait, setSectionFourTrait] = useState("");
   const [sectionFourImage, setSectionFourImage] = useState(null);
   const [sectionFourProgress, setSectionFourProgress] = useState(0);
 
@@ -797,6 +801,94 @@ const Development = () => {
     }
   };
 
+  const saveSectionOneTrait = (e) => {
+    e.preventDefault();
+
+    if (sectionOneTrait) {
+      db.collection("development")
+        .doc("devSections")
+        .collection("sectionOne")
+        .doc("traits")
+        .collection("all")
+        .add({ sectionOneTrait: sectionOneTrait })
+        .then(() => {
+          notifyDynamicSuccess({ message: "Trait updated successfully!" });
+        })
+        .catch((error) => {
+          notifyDynamicError({ message: error });
+        });
+    } else {
+      notifyDynamicError({ message: "Fill in the trait to update" });
+    }
+    setSectionOneTrait("");
+  };
+
+  const saveSectionTwoTrait = (e) => {
+    e.preventDefault();
+
+    if (sectionTwoTrait) {
+      db.collection("development")
+        .doc("devSections")
+        .collection("sectionTwo")
+        .doc("traits")
+        .collection("all")
+        .add({ sectionTwoTrait: sectionTwoTrait })
+        .then(() => {
+          notifyDynamicSuccess({ message: "Trait updated successfully!" });
+        })
+        .catch((error) => {
+          notifyDynamicError({ message: error });
+        });
+    } else {
+      notifyDynamicError({ message: "Fill in the trait to update" });
+    }
+    setSectionTwoTrait("");
+  };
+
+  const saveSectionThreeTrait = (e) => {
+    e.preventDefault();
+
+    if (sectionThreeTrait) {
+      db.collection("development")
+        .doc("devSections")
+        .collection("sectionThree")
+        .doc("traits")
+        .collection("all")
+        .add({ sectionThreeTrait: sectionThreeTrait })
+        .then(() => {
+          notifyDynamicSuccess({ message: "Trait updated successfully!" });
+        })
+        .catch((error) => {
+          notifyDynamicError({ message: error });
+        });
+    } else {
+      notifyDynamicError({ message: "Fill in the trait to update" });
+    }
+    setSectionThreeTrait("");
+  };
+
+  const saveSectionFourTrait = (e) => {
+    e.preventDefault();
+
+    if (sectionFourTrait) {
+      db.collection("development")
+        .doc("devSections")
+        .collection("sectionFour")
+        .doc("traits")
+        .collection("all")
+        .add({ sectionFourTrait: sectionFourTrait })
+        .then(() => {
+          notifyDynamicSuccess({ message: "Trait updated successfully!" });
+        })
+        .catch((error) => {
+          notifyDynamicError({ message: error });
+        });
+    } else {
+      notifyDynamicError({ message: "Fill in the trait to update" });
+    }
+    setSectionFourTrait("");
+  };
+
   //-> retrieve data from firestore database using firebase hooks
   const [headerDetails] = useDocument(
     db
@@ -917,6 +1009,38 @@ const Development = () => {
       .doc("devCurveQuote")
       .collection("info")
       .doc("devQuoteBackgroundImage")
+  );
+  const [sectionOneDetails] = useCollection(
+    db
+      .collection("development")
+      .doc("devSections")
+      .collection("sectionOne")
+      .doc("traits")
+      .collection("all")
+  );
+  const [sectionTwoDetails] = useCollection(
+    db
+      .collection("development")
+      .doc("devSections")
+      .collection("sectionTwo")
+      .doc("traits")
+      .collection("all")
+  );
+  const [sectionThreeDetails] = useCollection(
+    db
+      .collection("development")
+      .doc("devSections")
+      .collection("sectionThree")
+      .doc("traits")
+      .collection("all")
+  );
+  const [sectionFourDetails] = useCollection(
+    db
+      .collection("development")
+      .doc("devSections")
+      .collection("sectionFour")
+      .doc("traits")
+      .collection("all")
   );
 
   return (
@@ -1085,6 +1209,47 @@ const Development = () => {
         </Grid>
       </Grid>
 
+      <Grid container>
+        <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <h4 id={"sectionHeader"}>[ Section One Traits ]</h4>
+          <div>
+            <FormInput
+              type={"text"}
+              placeholder={"Enter section one trait"}
+              value={sectionOneTrait}
+              onChange={(e) => setSectionOneTrait(e.target.value)}
+              onClick={saveSectionOneTrait}
+              buttonType={"submit"}
+              buttonText={"Add"}
+            />
+          </div>
+        </Grid>
+
+        <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+          <h4 id={"homeSectionHeaderDetails"}>
+            [ Section One Traits Details ]
+          </h4>
+          <div className={"products__box"}>
+            {/* display traits here */}
+            {sectionOneDetails?.docs ? (
+              sectionOneDetails?.docs.map((doc) => {
+                const { sectionOneTrait } = doc.data();
+                return (
+                  <Trait
+                    key={doc.id}
+                    traitID={doc.id}
+                    trait={sectionOneTrait}
+                    section={"sectionOne"}
+                  />
+                );
+              })
+            ) : (
+              <PulseSpinner />
+            )}
+          </div>
+        </Grid>
+      </Grid>
+
       {/* section two */}
       <Grid container>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
@@ -1185,6 +1350,47 @@ const Development = () => {
                 <p id={"label"}> No image set</p>
               )}
             </div>
+          </div>
+        </Grid>
+      </Grid>
+
+      <Grid container>
+        <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <h4 id={"sectionHeader"}>[ Section Two Traits ]</h4>
+          <div>
+            <FormInput
+              type={"text"}
+              placeholder={"Enter section two trait"}
+              value={sectionTwoTrait}
+              onChange={(e) => setSectionTwoTrait(e.target.value)}
+              onClick={saveSectionTwoTrait}
+              buttonType={"submit"}
+              buttonText={"Add"}
+            />
+          </div>
+        </Grid>
+
+        <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+          <h4 id={"homeSectionHeaderDetails"}>
+            [ Section Two Traits Details ]
+          </h4>
+          <div className={"products__box"}>
+            {/* display traits here */}
+            {sectionTwoDetails?.docs ? (
+              sectionTwoDetails?.docs.map((doc) => {
+                const { sectionTwoTrait } = doc.data();
+                return (
+                  <Trait
+                    key={doc.id}
+                    traitID={doc.id}
+                    trait={sectionTwoTrait}
+                    section={"sectionTwo"}
+                  />
+                );
+              })
+            ) : (
+              <PulseSpinner />
+            )}
           </div>
         </Grid>
       </Grid>
@@ -1293,6 +1499,47 @@ const Development = () => {
         </Grid>
       </Grid>
 
+      <Grid container>
+        <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <h4 id={"sectionHeader"}>[ Section Three Traits ]</h4>
+          <div>
+            <FormInput
+              type={"text"}
+              placeholder={"Enter section three trait"}
+              value={sectionThreeTrait}
+              onChange={(e) => setSectionThreeTrait(e.target.value)}
+              onClick={saveSectionThreeTrait}
+              buttonType={"submit"}
+              buttonText={"Add"}
+            />
+          </div>
+        </Grid>
+
+        <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+          <h4 id={"homeSectionHeaderDetails"}>
+            [ Section Three Traits Details ]
+          </h4>
+          <div className={"products__box"}>
+            {/* display traits here */}
+            {sectionThreeDetails?.docs ? (
+              sectionThreeDetails?.docs.map((doc) => {
+                const { sectionThreeTrait } = doc.data();
+                return (
+                  <Trait
+                    key={doc.id}
+                    traitID={doc.id}
+                    trait={sectionThreeTrait}
+                    section={"sectionThree"}
+                  />
+                );
+              })
+            ) : (
+              <PulseSpinner />
+            )}
+          </div>
+        </Grid>
+      </Grid>
+
       {/* section four */}
       <Grid container>
         <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
@@ -1393,6 +1640,47 @@ const Development = () => {
                 <p id={"label"}> No image set</p>
               )}
             </div>
+          </div>
+        </Grid>
+      </Grid>
+
+      <Grid container>
+        <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <h4 id={"sectionHeader"}>[ Section Four Traits ]</h4>
+          <div>
+            <FormInput
+              type={"text"}
+              placeholder={"Enter section four trait"}
+              value={sectionFourTrait}
+              onChange={(e) => setSectionFourTrait(e.target.value)}
+              onClick={saveSectionFourTrait}
+              buttonType={"submit"}
+              buttonText={"Add"}
+            />
+          </div>
+        </Grid>
+
+        <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+          <h4 id={"homeSectionHeaderDetails"}>
+            [ Section Four Traits Details ]
+          </h4>
+          <div className={"products__box"}>
+            {/* display traits here */}
+            {sectionFourDetails?.docs ? (
+              sectionFourDetails?.docs.map((doc) => {
+                const { sectionFourTrait } = doc.data();
+                return (
+                  <Trait
+                    key={doc.id}
+                    traitID={doc.id}
+                    trait={sectionFourTrait}
+                    section={"sectionFour"}
+                  />
+                );
+              })
+            ) : (
+              <PulseSpinner />
+            )}
           </div>
         </Grid>
       </Grid>

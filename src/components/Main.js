@@ -69,7 +69,7 @@ const Main = () => {
             <div className={"body_top_bar"}>
               <div>
                 <RiAdminLine size={"1em"} color={"#f2f5ff"} />
-                <h4>Hola!, {user.displayName}</h4>
+                {user ? <h4>Hola!, {user.displayName}</h4> : <h4>Hola!</h4>}
               </div>
 
               <div>

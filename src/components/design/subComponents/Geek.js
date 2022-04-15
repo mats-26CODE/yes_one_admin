@@ -1,6 +1,5 @@
 import React from "react";
 import db from "../../firebase";
-import firebase from "firebase";
 
 import {
   notifyDynamicError,

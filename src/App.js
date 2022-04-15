@@ -30,11 +30,11 @@ function App() {
         dispatch(logout());
       }
     });
-  }, []);
+  }, [dispatch]);
   return (
     <BrowserRouter>
       <div className="app">
-        {!user ? <Authentication /> : <Main />}
+        {user ? <Main /> : <Authentication />}
         <Toaster position="top-center" reverseOrder={true} />
       </div>
     </BrowserRouter>

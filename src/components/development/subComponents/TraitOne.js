@@ -9,17 +9,19 @@ import {
 //-> react icons imports
 import { GiTrashCan } from "react-icons/gi";
 
-const Product = ({ homeProductID, homeProduct }) => {
-  const deleteProduct = (homeProductID) => {
-    if (homeProductID) {
-      db.collection("home")
-        .doc("homeIntro")
-        .collection("homeProducts")
-        .doc(homeProductID)
+const Trait = ({ traitID, trait, section }) => {
+  const deleteTrait = (traitID) => {
+    if (traitID) {
+      db.collection("development")
+        .doc("devSections")
+        .collection(`${section}`)
+        .doc("traits")
+        .collection("all")
+        .doc(traitID)
         .delete()
         .then(() => {
           notifyDynamicSuccess({
-            message: "Product deleted successfully",
+            message: "Trait deleted successfully",
           });
         })
         .catch((error) => {
@@ -33,16 +35,16 @@ const Product = ({ homeProductID, homeProduct }) => {
         <GiTrashCan
           size={"1.5rem"}
           className={"trash__icon"}
-          onClick={() => deleteProduct(homeProductID)}
+          onClick={() => deleteTrait(traitID)}
         />
       </div>
       <div>
         <p>
-          <span id={"label"}>Product:</span> {homeProduct}
+          <span id={"label"}>Trait:</span> {trait}
         </p>
       </div>
     </div>
   );
 };
 
-export default Product;
+export default Trait;

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Grid } from "@material-ui/core";
 import db from "../firebase";
-import firebase from "firebase";
 import { storage } from "../firebase";
 import { useDocument, useCollection } from "react-firebase-hooks/firestore";
 
